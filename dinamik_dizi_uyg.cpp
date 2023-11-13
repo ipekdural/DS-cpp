@@ -46,14 +46,21 @@ class DinamikDizi
 	
 		void sonaEkle(int eklenecekSayi)
 		{
-			if(kullanilan>=boyut)
+			arayaEkle(kullanilan,eklenecekSayi);
+		}
+		void degerCikar(int index)
+		{
+			if(index>=0 && index<kullanilan &&kullanilan>0)
 			{
-				yerAc(boyut*2);
+				for(int i=index;i<=kullanilan;i++)
+				{
+					adres[i]=adres[i+1];
+				}
+				kullanilan--;
 			}
 			else
 			{
-			adres[kullanilan]=eklenecekSayi;
-			kullanilan=kullanilan+1;
+				throw Exception("gecersiz index");
 			}
 		}
 		friend ostream& operator <<(ostream& os, const DinamikDizi& dizi)
@@ -80,6 +87,30 @@ class DinamikDizi
 			os<<endl<<endl;
 			
 		}
+		void arayaEkle(int index,int sayi)
+		{
+			if(index>=0&&index<=kullanilan)
+			{
+				if(kullanilan>=boyut)
+				{
+					yerAc(boyut*2);
+				}
+				
+				for(int i=kullanilan-1;i>=index;i--)
+				{
+					adres[i+1]=adres[i];
+				}
+				adres[index]=sayi;
+				kullanilan++;
+			
+			}
+			else
+			{
+				throw Exception("hatali sira ");
+			}
+			
+		}
+		
 		void yerAc(int yeniBoyut)
 		{
 			int *yeniAdres=new int[yeniBoyut];
@@ -90,6 +121,10 @@ class DinamikDizi
 			delete[] adres;
 			adres=yeniAdres;
 			boyut=yeniBoyut;
+		}
+		void sil()
+		{
+			kullanilan=0;
 		}
 	private:
 		int* adres;
@@ -125,15 +160,19 @@ int main()
 		}
 		else if (secim==2)
 		{
-			dizi.arayaEkle();
+			
+			int secim;cout<<"index girin:";cin>>secim;
+			dizi.arayaEkle(secim,rand()%90+10);
 		}
-		if(secim==3)
+		else if(secim==3)
 		{
-			dizi.degerCikar();
+			int secim;cout<<"index girin:";cin>>secim;
+			dizi.degerCikar(secim);
 		}
-		if(secim==4)
+		else if(secim==4)
 		{
-			dizi.cikis();
+			cout<<"bye";
+			dizi.sil();
 		}
 		else
 		{
